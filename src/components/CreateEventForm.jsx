@@ -1,157 +1,233 @@
 import { useState } from "react";
 import styled from '@emotion/styled';
 import Button from './Button';
+import { MdPhotoLibrary, MdCameraAlt, MdCalendarToday, MdAccessTime, MdLocationOn, MdPeople } from 'react-icons/md';
 
 const FormContainer = styled.div`
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  background: #f0f4ff;
+  min-height: 100vh;
+  padding: 40px 20px;
 `;
 
-const Title = styled.h2`
-  margin-bottom: 20px;
-  color: #1a1a1a;
+const Section = styled.div`
+  background: white;
+  margin-bottom: 16px;
+  padding: 28px 32px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 `;
 
 const Label = styled.label`
   display: block;
-  margin: 16px 0 6px;
-  font-weight: 500;
-  color: #333;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #222;
+  font-size: 15px;
+`;
+
+const Header = styled.div`
+  padding: 24px 32px;
+  font-size: 24px;
+  font-weight: 600;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Content = styled.div`
+  padding: 32px;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 14px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
   font-size: 16px;
-  box-sizing: border-box;
+  background: #f8f9fc;
 
   &:focus {
     outline: none;
-    border-color: #0066ff;
+    border-color: #4a6bff;
   }
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
   min-height: 100px;
-  font-size: 16px;
+  padding: 14px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: #f8f9fc;
   resize: vertical;
 `;
 
-const Select = styled.select`
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
+const PhotoSection = styled.div`
+  display: flex;
+  gap: 12px;
+  margin: 16px 0 32px;
+`;
+
+const PhotoButton = styled.button`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  font-size: 15px;
+`;
+
+const CameraButton = styled(PhotoButton)`
+  background: #4a6bff;
+  color: white;
+  border: none;
+`;
+
+const CategoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 32px;
+`;
+
+const CategoryChip = styled.button`
+  padding: 11px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  background: white;
+  font-size: 15px;
+  cursor: pointer;
+
+  &.active {
+    background: #4a6bff;
+    color: white;
+    border-color: #4a6bff;
+  }
+`;
+
+const DateSection = styled.div`
+  margin-bottom: 24px;
+`;
+
+const TimeSection = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
 `;
 
 export default function CreateEventForm() {
   const [formData, setFormData] = useState({
     title: "",
-    location: "",
-    date: "",
-    time: "",
-    maxParticipants: "",
-    type: "public", // public или private
-    description: ""
+    description: "",
+    categories: [],
+    type: "public"
   });
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const categories = [
+    "Спорт", "Искусство", "Путешествие", "IT", "Компьютерные игры",
+    "Технологии", "Еда", "Настольные игры", "Наука", "Музыка",
+    "Саморазвитие", "ЗОЖ", "Образование", "Кино", "Шопинг", "Ресторан"
+  ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Новая встреча:", formData);
-    alert("Встреча создана! (пока только в консоли)");
-    // Здесь позже будет отправка на бэкенд
+  const toggleCategory = (cat) => {
+    setFormData(prev => ({
+      ...prev,
+      categories: prev.categories.includes(cat)
+        ? prev.categories.filter(c => c !== cat)
+        : [...prev.categories, cat]
+    }));
   };
 
   return (
+    
     <FormContainer>
-      <Title>Создать новую встречу</Title>
-      
-      <form onSubmit={handleSubmit}>
-        <Label>Название встречи</Label>
-        <Input 
-          type="text" 
-          name="title" 
-          value={formData.title} 
-          onChange={handleChange}
-          required 
-        />
+        <Content>
+            <Section>
+                <Label>Название события *</Label>
+                <Input type="text" placeholder="Поход в кино" />
+            </Section>
 
-        <Label>Место встречи</Label>
-        <Input 
-          type="text" 
-          name="location" 
-          value={formData.location} 
-          onChange={handleChange}
-          placeholder="Например: Парк Горького или у Димы дома"
-          required 
-        />
+            <Section>
+                <Label>Описание *</Label>
+                <TextArea placeholder="Расскажи, чего ожидать..." />
+            </Section>
 
-        <div style={{ display: "flex", gap: "16px" }}>
-          <div style={{ flex: 1 }}>
-            <Label>Дата</Label>
-            <Input 
-              type="date" 
-              name="date" 
-              value={formData.date} 
-              onChange={handleChange}
-              required 
-            />
-          </div>
-          <div style={{ flex: 1 }}>
-            <Label>Время</Label>
-            <Input 
-              type="time" 
-              name="time" 
-              value={formData.time} 
-              onChange={handleChange}
-              required 
-            />
-          </div>
-        </div>
+            <Section>
+                <Label>Добавить фото</Label>
+                <PhotoSection>
+                    <PhotoButton>
+                        <MdPhotoLibrary size={22} />
+                        Из галереи
+                    </PhotoButton>
+                    <CameraButton>
+                        <MdCameraAlt size={22} />
+                        Сделать фото
+                    </CameraButton>
+                </PhotoSection>
+            </Section>
 
-        <Label>Тип встречи</Label>
-        <Select name="type" value={formData.type} onChange={handleChange}>
-          <option value="public">Публичное мероприятие</option>
-          <option value="private">Приватное (для друзей)</option>
-        </Select>
+            <Section>
+                <Label>Тип события *</Label>
+                <CategoryGrid>
+                    {categories.map(cat => (
+                        <CategoryChip
+                            key={cat}
+                            onClick={() => toggleCategory(cat)}
+                            className={formData.categories.includes(cat) ? "active" : ""}
+                        >
+                            {cat}
+                            </CategoryChip>
+                    ))}
+                </CategoryGrid>
+            </Section>
 
-        <Label>Максимальное количество участников</Label>
-        <Input 
-          type="number" 
-          name="maxParticipants" 
-          value={formData.maxParticipants} 
-          onChange={handleChange}
-          placeholder="Неограничено"
-        />
+            <Section>
+                <Label>Дата и время *</Label>
+                <DateSection>
+                    <Input type="date" style={{ marginBottom: "12px" }} />
+                </DateSection>
 
-        <Label>Описание / детали</Label>
-        <TextArea 
-          name="description" 
-          value={formData.description} 
-          onChange={handleChange}
-          placeholder="Что планируем делать, что взять с собой и т.д."
-        />
+                <TimeSection>
+                    <Input type="time" />
+                    <div style={{ display: 'flex', alignItems: 'center', color: '#999' }}>→</div>
+                    <Input type="time" />
+                </TimeSection>
+            </Section>
 
-        <Button primary style={{ marginTop: "20px", width: "100%" }}>
-          Создать встречу
-        </Button>
-      </form>
+            <Section>
+                <Label>Место *</Label>
+                <Input 
+                    type="text" 
+                    placeholder="Полный адрес или ссылка" 
+                    style={{ marginBottom: "32px" }}
+                />
+            </Section>
+
+            <Section>
+                <Label>Формат события</Label>
+                <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
+                    <Button style={{ flex: 1 }}>Закрытое</Button>
+                    <Button primary style={{ flex: 1 }}>Публичное</Button>
+                </div>
+
+                <Button style={{ width: "100%", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                    <MdPeople size={20} />
+                    Добавить участников
+                </Button>
+            </Section>
+
+            <Section>
+                <Button primary style={{ width: "100%", padding: "16px", fontSize: "17px" }}>
+                    Отправить повод
+                </Button>
+            </Section>
+        </Content>
+      {/* </FormCard> */}
     </FormContainer>
   );
 }
