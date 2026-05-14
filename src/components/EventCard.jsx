@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Button from './Button';   // ← Добавь эту строку
+import Button from './Button';
 
 const Card = styled.div`
   background: white;
