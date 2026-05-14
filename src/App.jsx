@@ -1,78 +1,102 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import styled from '@emotion/styled';
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+import Button from "./components/Button";
+import EventCard from "./components/EventCard";
+import CreateEventForm from "./components/CreateEventForm";
+
+const Container = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: system-ui, Arial, sans-serif;
+`;
+
+const Header = styled.div`
+  text-align: center;
+  margin-bottom: 30px;
+`;
 
 function App() {
-  const [ping, setPing] = useState(null);
-  const [health, setHealth] = useState(null);
-  const [dbTime, setDbTime] = useState(null);
-  const [error, setError] = useState(null);
+  const [page, setPage] = useState("home");
 
-  async function loadBackendStatus() {
-    try {
-      setError(null);
-
-      const [pingResponse, healthResponse] = await Promise.all([
-        fetch(`${API_URL}/api/ping`),
-        fetch(`${API_URL}/health`),
-      ]);
-
-      const pingData = await pingResponse.json();
-      const healthData = await healthResponse.json();
-
-      setPing(pingData);
-      setHealth(healthData);
-
-      if (healthData.database_enabled) {
-        const dbResponse = await fetch(`${API_URL}/api/db/time`);
-        const dbData = await dbResponse.json();
-        setDbTime(dbData);
-      } else {
-        setDbTime(null);
-      }
-    } catch (err) {
-      setError(err.message);
+  const sampleEvents = [
+    {
+      id: 1,
+      title: "Встреча в парке Горького",
+      location: "Парк Горького, Москва",
+      date: "15 мая",
+      time: "18:00",
+      type: "public"
+    },
+    {
+      id: 2,
+      title: "Игровой вечер у Димы",
+      location: "У Димы дома",
+      date: "16 мая",
+      time: "19:30",
+      type: "private"
     }
-  }
-
-  useEffect(() => {
-    loadBackendStatus();
-  }, []);
+  ];
 
   return (
-    <div style={{ fontFamily: "system-ui", padding: "2rem" }}>
-      <h1>Hackathon Frontend</h1>
+    <Container>
+      <Header>
+        <h1>🤝 Встречи ВКонтакте</h1>
+        <p>Находи друзей и создавай события легко</p>
+      </Header>
 
-      <p>Если вы это видите — CI/CD и деплой работают.</p>
-      <p>Ниже минимальная проверка связи frontend с backend.</p>
+      {/* Навигация */}
+      <div style={{ marginBottom: "30px", textAlign: "center" }}>
+        <Button 
+          primary={page === "home"} 
+          onClick={() => setPage("home")}
+        >
+          Главная
+        </Button>
+        
+        <Button 
+          primary={page === "create"} 
+          onClick={() => setPage("create")}
+          style={{ margin: "0 8px" }}
+        >
+          Создать встречу
+        </Button>
+        
+        <Button 
+          primary={page === "my-events"} 
+          onClick={() => setPage("my-events")}
+        >
+          Мои встречи
+        </Button>
+      </div>
 
-      <button onClick={loadBackendStatus}>
-        Проверить backend ещё раз
-      </button>
-
-      <h2>Backend URL</h2>
-      <pre>{API_URL}</pre>
-
-      <h2>/api/ping</h2>
-      <pre>{ping ? JSON.stringify(ping, null, 2) : "Загрузка..."}</pre>
-
-      <h2>/health</h2>
-      <pre>{health ? JSON.stringify(health, null, 2) : "Загрузка..."}</pre>
-
-      <h2>/api/db/time</h2>
-      <pre>
-        {dbTime
-          ? JSON.stringify(dbTime, null, 2)
-          : "БД выключена или не проверялась"}
-      </pre>
-
-      {error && (
+      {/* Главная страница */}
+      {page === "home" && (
         <>
-          <h2>Ошибка</h2>
-          <pre style={{ color: "crimson" }}>{error}</pre>
+          <h2>Ближайшие встречи</h2>
+          {sampleEvents.map(event => (
+            <EventCard key={event.id} event={event} />
+          ))}
         </>
       )}
-    </div>
+
+      {/* Страница создания встречи */}
+      {page === "create" && (
+        <>
+          <h2>Создать новую встречу</h2>
+          <CreateEventForm />
+        </>
+      )}
+
+      {/* Мои встречи */}
+      {page === "my-events" && (
+        <div>
+          <h2>Мои встречи</h2>
+          <p>Здесь позже будет список твоих созданных и принятых встреч.</p>
+        </div>
+      )}
+    </Container>
   );
 }
 
