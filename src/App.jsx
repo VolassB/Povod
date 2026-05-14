@@ -41,35 +41,36 @@ function App() {
 
   return (
     <Container>
-      <Header>
-        <h1>🤝 Встречи ВКонтакте</h1>
-        <p>Находи друзей и создавай события легко</p>
+      <Header style={{ background: "#2D81E0", display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: "20px"}}>
+        <div>
+          <h1>🤝 Повод 🤝</h1>
+          <p>Находи друзей и создавай события легко</p>
+        </div>
+        {/* Навигация */}
+        <div style={{ display: "flex", padding: "10px", background: "white", gap: "10px" }}>
+          <Button 
+            primary={page === "home"} 
+            onClick={() => setPage("home")}
+          >
+            Главная
+          </Button>
+        
+          <Button 
+            primary={page === "create"} 
+            onClick={() => setPage("create")}
+            style={{ margin: "0 8px" }}
+          >
+            Создать встречу
+          </Button>
+        
+          <Button 
+            primary={page === "my-events"} 
+            onClick={() => setPage("my-events")}
+          >
+            Мои встречи
+          </Button>
+        </div>
       </Header>
-
-      {/* Навигация */}
-      <div style={{ marginBottom: "30px", textAlign: "center" }}>
-        <Button 
-          primary={page === "home"} 
-          onClick={() => setPage("home")}
-        >
-          Главная
-        </Button>
-        
-        <Button 
-          primary={page === "create"} 
-          onClick={() => setPage("create")}
-          style={{ margin: "0 8px" }}
-        >
-          Создать встречу
-        </Button>
-        
-        <Button 
-          primary={page === "my-events"} 
-          onClick={() => setPage("my-events")}
-        >
-          Мои встречи
-        </Button>
-      </div>
 
       {/* Главная страница */}
       {page === "home" && (
