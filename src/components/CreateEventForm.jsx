@@ -100,16 +100,27 @@ const PhotoButton = styled.button`
 
 const CameraButton = styled(PhotoButton)``;
 
-const FormatButton = styled(PhotoButton)`
-  padding: 16px 20px;
-  font-size: 16px;
-  font-weight: 500;
-`;
+const FormatButton = styled.button`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  font-size: 15px;
+  transition: background 0.2s ease;
 
-const FormatActiveButton = styled(FormatButton)`
-  background: #4a6bff;
-  color: white;
-  border: none;
+  &:focus-visible {
+    background: #99A2AD;
+    color: white;
+    outline: none;
+    border-color: #a6bff;
+  }
+
+  ${props => props.$isActive && 'background: #99A2AD; color: white'}
 `;
 
 const CategoryGrid = styled.div`
@@ -248,8 +259,14 @@ export default function CreateEventForm() {
             <Section style={{display: "flex", flexDirection: "column"}}>
                 <Label>Формат события</Label>
                 <div style={{ display: "flex", gap: "12px", marginBottom: "24px", justifyContent: "center" }}>
-                  <FormatButton> Закрытое </FormatButton>
-                  <FormatButton>Публичное</FormatButton>
+                  <FormatButton
+                      type="button"
+                      $isActive={activeButton === 'private'}
+                      onClick={() => setActiveButton('private')}> Закрытое </FormatButton>
+                  <FormatButton 
+                      type="button"
+                      $isActive={activeButton === 'public'}
+                      onClick={() => setActiveButton('public')}>Публичное</FormatButton>
                 </div>
 
                 <Button style={{ width: "100%", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
