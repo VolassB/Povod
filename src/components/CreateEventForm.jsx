@@ -145,14 +145,37 @@ const CategoryChip = styled.button`
   }
 `;
 
-const DateSection = styled.div`
-  margin-bottom: 24px;
+const DateInputWrapper = styled.div`
+  position: relative;
+  margin-bottom: 16px;
 `;
 
-const TimeSection = styled.div`
-  display: flex;
-  gap: 12px;
-  margin-bottom: 32px;
+const DateInput = styled(Input)`
+  padding-left: 52px;
+  background: white;
+  border: 1px solid #4a6bff;
+  color: #222;
+  font-size: 16px;
+  height: 56px;
+`;
+
+const TimeInput = styled(Input)`
+  padding-left: 52px;
+  text-align: center;
+  background: white;
+  border: 1px solid #4a6bff;
+  font-size: 17px;
+  font-weight: 600;
+  height: 56px;
+`;
+
+const IconWrapper = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4a6bff;
+  z-index: 1;
 `;
 
 export default function CreateEventForm() {
@@ -160,10 +183,18 @@ export default function CreateEventForm() {
     title: "",
     description: "",
     categories: [],
-    type: "public"
+    type: "public",
+    date: "2026-06-26",
+    startTime: "16:00",
+    endTime: "18:00"
   });
 
   const [activeButton, setActiveButton] = useState(null);
+  const [eventFormat, setEventFormat] = useState(null);
+
+  const handleChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value}))
+  };
 
   const categories = [
     "Спорт", "Искусство", "Путешествие", "IT", "Компьютерные игры",
@@ -216,7 +247,7 @@ export default function CreateEventForm() {
                 </PhotoSection>
             </Section>
 
-            <Section>
+            <Section style={{background: "transparent", outline: "none"}}>
                 <Label>Тип события *</Label>
                 <CategoryGrid>
                     {categories.map(cat => (
@@ -232,16 +263,54 @@ export default function CreateEventForm() {
             </Section>
 
             <Section style={{ padding: "28px 32px" }}>
-                <Label>Дата и время *</Label>
-                <DateSection style={{paddingRight: "35px"}}>
-                    <Input type="date" style={{ marginBottom: "12px" }} />
-                </DateSection>
+              <Label>Дата и время *</Label>
 
-                <TimeSection>
-                    <Input type="time" />
-                    <div style={{ display: 'flex', alignItems: 'center', color: '#999' }}>→</div>
-                    <Input type="time" />
-                </TimeSection>
+              {/* Дата */}
+              <DateInputWrapper>
+                <IconWrapper>
+                  <MdCalendarToday size={24} />
+                </IconWrapper>
+                <DateInput 
+                  type="data" 
+                  value="{formData.date}" 
+                  onChange={(e) => handleChange('date', e.target.value)}
+                />
+              </DateInputWrapper>
+
+              {/* Время */}
+              <TimeSection>
+                <div style={{ position: 'relative', flex: 1 }}>
+                  <IconWrapper>
+                    <MdAccessTime size={24} />
+                  </IconWrapper>
+                  <TimeInput 
+                    type="time" 
+                    value={formData.startTime} 
+                    onChange={(e) => handleChange('startTime', e.target.value)}
+                  />
+                </div>
+
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  color: '#666', 
+                  fontSize: '20px',
+                  padding: '0 8px'
+                }}>
+                  —
+                </div>
+
+                <div style={{ position: 'relative', flex: 1 }}>
+                  <IconWrapper>
+                    <MdAccessTime size={24} />
+                  </IconWrapper>
+                  <TimeInput 
+                    type="time" 
+                    value={formData.endTime}
+                    onChange={(e) => handleChange('endTime', e.target.value)} 
+                  />
+                </div>
+              </TimeSection>
             </Section>
 
             <Section>
@@ -261,12 +330,12 @@ export default function CreateEventForm() {
                 <div style={{ display: "flex", gap: "12px", marginBottom: "24px", justifyContent: "center" }}>
                   <FormatButton
                       type="button"
-                      $isActive={activeButton === 'private'}
-                      onClick={() => setActiveButton('private')}> Закрытое </FormatButton>
+                      $isActive={eventFormat === 'private'}
+                      onClick={() => setEventFormat('private')}> Закрытое </FormatButton>
                   <FormatButton 
                       type="button"
-                      $isActive={activeButton === 'public'}
-                      onClick={() => setActiveButton('public')}>Публичное</FormatButton>
+                      $isActive={eventFormat === 'public'}
+                      onClick={() => setEventFormat('public')}>Публичное</FormatButton>
                 </div>
 
                 <Button style={{ width: "100%", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
