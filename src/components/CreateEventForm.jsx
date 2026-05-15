@@ -200,6 +200,7 @@ export default function CreateEventForm() {
 
   const [activeButton, setActiveButton] = useState(null);
   const [eventFormat, setEventFormat] = useState(null);
+  const [showParticipantsModal, setShowParticipantsModal] = useState(false);
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value}))
@@ -331,9 +332,9 @@ export default function CreateEventForm() {
                       onClick={() => setEventFormat('public')}>Публичное</FormatButton>
                 </div>
 
-                <Button style={{ width: "100%", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                <Button primary style={{ width: "100%", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center", paddingLeft: "52px" }}>
                     <MdPeople size={20} />
-                    Добавить участников
+                    Добавить участников+
                 </Button>
             </Section>
 

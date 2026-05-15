@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import Button from "./components/Button";
 import EventCard from "./components/EventCard";
 import CreateEventForm from "./components/CreateEventForm";
+import LoadingAnimation from './components/LoadingAnimation';
 
 const Container = styled.div`
   max-width: 800px;
@@ -18,6 +19,7 @@ const Header = styled.div`
 `;
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState("home");
 
   const sampleEvents = [
