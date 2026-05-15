@@ -100,6 +100,18 @@ const PhotoButton = styled.button`
 
 const CameraButton = styled(PhotoButton)``;
 
+const FormatButton = styled(PhotoButton)`
+  padding: 16px 20px;
+  font-size: 16px;
+  font-weight: 500;
+`;
+
+const FormatActiveButton = styled(FormatButton)`
+  background: #4a6bff;
+  color: white;
+  border: none;
+`;
+
 const CategoryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -236,8 +248,8 @@ export default function CreateEventForm() {
             <Section style={{display: "flex", flexDirection: "column"}}>
                 <Label>Формат события</Label>
                 <div style={{ display: "flex", gap: "12px", marginBottom: "24px", justifyContent: "center" }}>
-                    <Button style={{ width: "100%", display: "flex" }}>Закрытое</Button>
-                    <Button primary>Публичное</Button>
+                  <FormatButton> Закрытое </FormatButton>
+                  <FormatButton>Публичное</FormatButton>
                 </div>
 
                 <Button style={{ width: "100%", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
