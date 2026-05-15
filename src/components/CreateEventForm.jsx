@@ -12,7 +12,7 @@ const FormContainer = styled.div`
 const Section = styled.div`
   background: white;
   margin-bottom: 16px;
-  padding: 28px 32px;
+  padding: 28px 60px 28px 32px;
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
 `;
@@ -149,12 +149,12 @@ export default function CreateEventForm() {
         <Content>
             <Section>
                 <Label>Название события *</Label>
-                <Input type="text" placeholder="Поход в кино" />
+                <Input type="text" placeholder="Поход в кино"/>
             </Section>
 
             <Section>
                 <Label>Описание *</Label>
-                <TextArea placeholder="Расскажи, чего ожидать..." />
+                <TextArea placeholder="Расскажи, чего ожидать..."/>
             </Section>
 
             <Section>
@@ -186,9 +186,9 @@ export default function CreateEventForm() {
                 </CategoryGrid>
             </Section>
 
-            <Section>
+            <Section style={{ padding: "28px 32px" }}>
                 <Label>Дата и время *</Label>
-                <DateSection>
+                <DateSection style={{paddingRight: "35px"}}>
                     <Input type="date" style={{ marginBottom: "12px" }} />
                 </DateSection>
 
@@ -208,11 +208,11 @@ export default function CreateEventForm() {
                 />
             </Section>
 
-            <Section>
+            <Section style={{display: "flex", flexDirection: "column"}}>
                 <Label>Формат события</Label>
-                <div style={{ display: "flex", gap: "12px", marginBottom: "24px" }}>
-                    <Button style={{ flex: 1 }}>Закрытое</Button>
-                    <Button primary style={{ flex: 1 }}>Публичное</Button>
+                <div style={{ display: "flex", gap: "12px", marginBottom: "24px", justifyContent: "center" }}>
+                    <Button style={{ width: "100%", display: "flex" }}>Закрытое</Button>
+                    <Button primary>Публичное</Button>
                 </div>
 
                 <Button style={{ width: "100%", marginBottom: "12px", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
