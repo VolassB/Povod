@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styled from '@emotion/styled';
 import Button from './Button';
-import { MdCameraAlt, MdCalendarToday, MdAccessTime, MdLocationOn, MdPeople } from 'react-icons/md';
+import { MdCameraAlt, MdAccessTime, MdLocationOn, MdPeople } from 'react-icons/md';
 import GalleryIcon from '../assets/gallery.svg?react';
+import MdCalendarToday from '../assets/MdCalendarToday.svg?react';
 
 const FormContainer = styled.div`
   background: #f0f4ff;
@@ -150,32 +151,40 @@ const DateInputWrapper = styled.div`
   margin-bottom: 16px;
 `;
 
+const IconWrapper = styled.div`
+  position: absolute;
+  left: 260px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4a6bff;
+  z-index: 1;
+`;
+
 const DateInput = styled(Input)`
   padding-left: 52px;
   background: white;
-  border: 1px solid #4a6bff;
-  color: #222;
+  border: 1.5px solid #4a6bff;
   font-size: 16px;
   height: 56px;
+  width: 100%;
+  text-align: center;
 `;
 
 const TimeInput = styled(Input)`
   padding-left: 52px;
   text-align: center;
   background: white;
-  border: 1px solid #4a6bff;
+  border: 1.5px solid #4a6bff;
   font-size: 17px;
   font-weight: 600;
   height: 56px;
+  width: 100%;
 `;
 
-const IconWrapper = styled.div`
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #4a6bff;
-  z-index: 1;
+const TimeSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
 `;
 
 export default function CreateEventForm() {
@@ -262,7 +271,7 @@ export default function CreateEventForm() {
                 </CategoryGrid>
             </Section>
 
-            <Section style={{ padding: "28px 32px" }}>
+            <Section style={{ padding: "28px 90px 28px 32px" }}>
               <Label>Дата и время *</Label>
 
               {/* Дата */}
@@ -270,43 +279,27 @@ export default function CreateEventForm() {
                 <IconWrapper>
                   <MdCalendarToday size={24} />
                 </IconWrapper>
-                <DateInput 
+                <DateInput
                   type="data" 
-                  value="{formData.date}" 
+                  value={formData.date || ""}
                   onChange={(e) => handleChange('date', e.target.value)}
                 />
               </DateInputWrapper>
 
               {/* Время */}
-              <TimeSection>
+              <TimeSection style={{gap: "20px"}}>
                 <div style={{ position: 'relative', flex: 1 }}>
-                  <IconWrapper>
-                    <MdAccessTime size={24} />
-                  </IconWrapper>
                   <TimeInput 
                     type="time" 
-                    value={formData.startTime} 
+                    value={formData.startTime || ""} 
                     onChange={(e) => handleChange('startTime', e.target.value)}
                   />
                 </div>
-
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  color: '#666', 
-                  fontSize: '20px',
-                  padding: '0 8px'
-                }}>
-                  —
-                </div>
-
+                    <span style={{marginLeft: "70px",}}>-</span>
                 <div style={{ position: 'relative', flex: 1 }}>
-                  <IconWrapper>
-                    <MdAccessTime size={24} />
-                  </IconWrapper>
                   <TimeInput 
                     type="time" 
-                    value={formData.endTime}
+                    value={formData.endTime || ""}
                     onChange={(e) => handleChange('endTime', e.target.value)} 
                   />
                 </div>
@@ -315,7 +308,7 @@ export default function CreateEventForm() {
 
             <Section>
               <Label>Место *</Label>
-              <div style={{ position: "relative", marginBottom: "32px" }}>
+              <div style={{ position: "relative" }}>
                 <MdLocationOn size={22} style={{position: "absolute", left: "12px", transform: "translateY(60%)", pointerEvents: "none", color: "#99A2AD"}}/>
                 <Input 
                   type="text" 
