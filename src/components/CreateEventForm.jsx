@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styled from '@emotion/styled';
 import Button from './Button';
-import { MdPhotoLibrary, MdCameraAlt, MdCalendarToday, MdAccessTime, MdLocationOn, MdPeople } from 'react-icons/md';
+import { MdCameraAlt, MdCalendarToday, MdAccessTime, MdLocationOn, MdPeople } from 'react-icons/md';
+import GalleryIcon from '../assets/gallery.svg?react';
 
 const FormContainer = styled.div`
   background: #f0f4ff;
@@ -61,6 +62,11 @@ const TextArea = styled.textarea`
   border-radius: 12px;
   background: #f8f9fc;
   resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: #4a6bff;
+  }
 `;
 
 const PhotoSection = styled.div`
@@ -80,13 +86,19 @@ const PhotoButton = styled.button`
   border-radius: 12px;
   background: white;
   font-size: 15px;
+  transition: background 0.2s ease;
+
+  &:focus-visible {
+    background: #99A2AD;
+    color: white;
+    outline: none;
+    border-color: #a6bff;
+  }
+
+  ${props => props.$isActive && 'background: #99A2AD; color: white'}
 `;
 
-const CameraButton = styled(PhotoButton)`
-  background: #4a6bff;
-  color: white;
-  border: none;
-`;
+const CameraButton = styled(PhotoButton)``;
 
 const CategoryGrid = styled.div`
   display: grid;
@@ -128,6 +140,8 @@ export default function CreateEventForm() {
     type: "public"
   });
 
+  const [activeButton, setActiveButton] = useState(null);
+
   const categories = [
     "Спорт", "Искусство", "Путешествие", "IT", "Компьютерные игры",
     "Технологии", "Еда", "Настольные игры", "Наука", "Музыка",
@@ -160,12 +174,20 @@ export default function CreateEventForm() {
             <Section>
                 <Label>Добавить фото</Label>
                 <PhotoSection>
-                    <PhotoButton>
-                        <MdPhotoLibrary size={22} />
+                    <PhotoButton
+                      type="button"
+                      $isActive={activeButton=== 'gallery'}
+                      onClick={() => setActiveButton('gallery')}
+                    >
+                        <GalleryIcon style={{ width: 22, height: 22 }} />
                         Из галереи
                     </PhotoButton>
-                    <CameraButton>
-                        <MdCameraAlt size={22} />
+                    <CameraButton
+                      type="button"
+                      $isActive={activeButton === 'camera'}
+                      onClick={() => setActiveButton('camera')}
+                    >
+                        <MdCameraAlt size={24} />
                         Сделать фото
                     </CameraButton>
                 </PhotoSection>
@@ -200,12 +222,15 @@ export default function CreateEventForm() {
             </Section>
 
             <Section>
-                <Label>Место *</Label>
+              <Label>Место *</Label>
+              <div style={{ position: "relative", marginBottom: "32px" }}>
+                <MdLocationOn size={22} style={{position: "absolute", left: "12px", transform: "translateY(60%)", pointerEvents: "none", color: "#99A2AD"}}/>
                 <Input 
-                    type="text" 
-                    placeholder="Полный адрес или ссылка" 
-                    style={{ marginBottom: "32px" }}
+                  type="text" 
+                  placeholder="Полный адрес или ссылка" 
+                  style={{ marginBottom: "32px", paddingLeft: "40px" }}
                 />
+              </div>
             </Section>
 
             <Section style={{display: "flex", flexDirection: "column"}}>
@@ -227,7 +252,6 @@ export default function CreateEventForm() {
                 </Button>
             </Section>
         </Content>
-      {/* </FormCard> */}
     </FormContainer>
   );
 }
