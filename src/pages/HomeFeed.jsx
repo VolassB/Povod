@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import Layout from '../components/Layot'; // Импортируем Layout
+import Layout from '../components/Layot';
 
-// Оставляем только уникальные стили для этой страницы
 const Feed = styled.div`
   flex: 1;
   display: flex;
@@ -42,10 +41,15 @@ const EventDetails = styled.p`
   line-height: 1.5;
 `;
 
-const Status = styled.div`
+const Tag = styled.span`
+  background: #eef2ff;
   color: #4a6bff;
-  font-weight: 500;
-  margin-bottom: 16px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  align-self: flex-start;
+  margin-bottom: 12px;
 `;
 
 const BlueButton = styled.button`
@@ -58,6 +62,9 @@ const BlueButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   align-self: flex-start;
+  &:hover {
+    background: #3b52d9;
+  }
 `;
 
 const FiltersSidebar = styled.div`
@@ -80,50 +87,62 @@ const FilterSelect = styled.div`
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   margin-bottom: 12px;
+  color: #6b7280;
+  font-size: 14px;
 `;
 
-const MyEvents = () => {
-  const myEvents = [
+const HomeFeed = () => {
+  const allEvents = [
     {
       id: 1,
-      title: "Настольные игры",
+      title: "Пляжный волейбол",
+      category: "Спорт",
       image: "https://unsplash.com",
-      location: "Крестовский о-в",
-      date: "18.06.26",
-      time: "19:00",
-      participants: "4 человека",
-      status: "Идёт набор"
+      location: "ЦПКиО / ЗЕНИТ",
+      date: "Сегодня",
+      time: "15:00",
+      participants: "5 из 12 человек"
+    },
+    {
+      id: 2,
+      title: "Выставка современного искусства",
+      category: "Искусство",
+      image: "https://unsplash.com",
+      location: "Эрарта",
+      date: "19.06.26",
+      time: "12:00",
+      participants: "2 из 4 человек"
     }
   ];
 
   return (
-    <Layout> {/* Оборачиваем уникальный контент страницы */}
+    <Layout>
       <Feed>
-        {myEvents.map(event => (
+        {allEvents.map(event => (
           <EventCard key={event.id}>
             <EventImage src={event.image} alt={event.title} />
             <EventInfo>
+              <Tag>{event.category}</Tag>
               <EventTitle>{event.title}</EventTitle>
               <EventDetails>
                 📍 {event.location}<br />
                 📅 {event.date} • {event.time}<br />
                 👥 {event.participants}
               </EventDetails>
-              <Status>{event.status}</Status>
-              <BlueButton>Перейти к поводу</BlueButton>
+              <BlueButton>Интересно</BlueButton>
             </EventInfo>
           </EventCard>
         ))}
       </Feed>
 
       <FiltersSidebar>
-        <FilterTitle>Интересы</FilterTitle>
-        <FilterSelect>Все</FilterSelect>
-        <FilterTitle>Дата</FilterTitle>
-        <FilterSelect>Любая</FilterSelect>
+        <FilterTitle>Категория</FilterTitle>
+        <FilterSelect>Все интересы</FilterSelect>
+        <FilterTitle>Район</FilterTitle>
+        <FilterSelect>Любой</FilterSelect>
       </FiltersSidebar>
     </Layout>
   );
 };
 
-export default MyEvents;
+export default HomeFeed;

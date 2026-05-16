@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { MdHome, MdAddCircleOutline, MdEventNote, MdForum } from 'react-icons/md';
 import { FaBell } from 'react-icons/fa';
 import EventCard from '../components/EventCard';
+import Layout from '../components/Layot';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -136,39 +138,11 @@ const Home = () => {
     }
   ];
 
+  const navigate = useNavigate();
+
   return (
-    <Container>
-      {/* Header */}
-      <Header>
-        <Logo>🔷 Повод</Logo>
-        
-        <Search placeholder="Поиск" />
-
-        <RightSide>
-          <BellIcon>
-            <FaBell size={24} />
-          </BellIcon>
-          <Avatar src="https://i.pravatar.cc/40" alt="avatar" />
-        </RightSide>
-      </Header>
-
+    <Layout>
       <Main>
-        {/* Sidebar */}
-        <Sidebar>
-          <NavItem active>
-            <MdHome size={26} /> Главная
-          </NavItem>
-          <NavItem>
-            <MdAddCircleOutline size={26} /> Создать повод
-          </NavItem>
-          <NavItem>
-            <MdEventNote size={26} /> Мои поводы
-          </NavItem>
-          <NavItem>
-            <MdForum size={26} /> Обсуждения
-          </NavItem>
-        </Sidebar>
-
         {/* Feed */}
         <Feed>
           {events.map(event => (
@@ -191,7 +165,7 @@ const Home = () => {
           <FilterSelect>Любое</FilterSelect>
         </Filters>
       </Main>
-    </Container>
+    </Layout>
   );
 };
 

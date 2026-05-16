@@ -1,96 +1,12 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { MdHome, MdAddCircleOutline, MdEventNote, MdForum, MdLocationOn, MdClose } from 'react-icons/md';
-import { FaBell } from 'react-icons/fa';
+import { MdLocationOn, MdClose } from 'react-icons/md';
 import { FiImage, FiCamera } from 'react-icons/fi';
+import Layout from '../components/Layot';
+import ExactEventForm from '../components/ExactEventForm'; // Импортируем точный повод
+import GalleryIcon from '../assets/Gallery.svg?react';
 
-export default CreateEventIdea;
-
-// Стилизация компонентов
-const Container = styled.div`
-  min-height: 100vh;
-  background: #f4f6f9;
-  font-family: system-ui, -apple-system, sans-serif;
-`;
-
-const Header = styled.header`
-  background: white;
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  border-bottom: 1px solid #e5e7eb;
-`;
-
-const Logo = styled.a`
-  font-size: 28px;
-  font-weight: 700;
-  color: #4a6bff;
-  text-decoration: none;
-`;
-
-const SearchInput = styled.input`
-  flex: 1;
-  max-width: 420px;
-  padding: 12px 20px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 16px;
-  background: #f3f4f6;
-  &:focus {
-    outline: none;
-    background: white;
-    border-color: #4a6bff;
-  }
-`;
-
-const BellIcon = styled.div`
-  color: #555;
-  cursor: pointer;
-  margin-left: auto;
-`;
-
-const Avatar = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-`;
-
-const Main = styled.div`
-  display: flex;
-  gap: 24px;
-  padding: 24px;
-  max-width: 1280px;
-  margin: 0 auto;
-`;
-
-const Sidebar = styled.div`
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const NavItem = styled.div`
-  padding: 14px 20px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 17px;
-  font-weight: 500;
-  cursor: pointer;
-  color: ${props => props.active ? '#4a6bff' : '#374151'};
-  background: ${props => props.active ? '#eef2ff' : 'transparent'};
-  &:hover {
-    background: #f3f4f6;
-  }
-`;
-
-const Feed = styled.div`
+const FormFeed = styled.div`
   flex: 1;
   max-width: 680px;
   background: white;
@@ -171,9 +87,9 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Row = styled.div`
+const ButtonRow = styled.div`
   display: flex;
-  gap: ${props => props.gap || '0px'};
+  gap: 12px;
 `;
 
 const IconButton = styled.button`
@@ -355,8 +271,10 @@ const SubmitButton = styled.button`
   }
 `;
 
-
 const CreateEventIdea = () => {
+  // Переключатель типа формы: 'exact' (точный повод) или 'idea' (идея)
+  const [formType, setFormType] = useState('idea');
+  
   const [dates, setDates] = useState(['', '']);
   const [times, setTimes] = useState(['', '']);
   const [places, setPlaces] = useState(['', '']);
@@ -374,32 +292,30 @@ const CreateEventIdea = () => {
   const updateField = (index, value, setter) => setter((prev) => prev.map((item, i) => i === index ? value : item));
 
   return (
-    <Container>
-      {/* Header */}
-      <Header>
-        <Logo href="https://github.com" target="_blank">🔷 Повод</Logo>
-        <SearchInput placeholder="Поиск" />
-        <BellIcon><FaBell size={24} /></BellIcon>
-        <Avatar src="https://i.pravatar.cc/40" alt="avatar" />
-      </Header>
+    <Layout>
+      <FormFeed>
+        {/* Интерактивный переключатель вкладок формы */}
+        <ToggleContainer>
+          <ToggleButton 
+            type="button" 
+            active={formType === 'exact'} 
+            onClick={() => setFormType('exact')}
+          >
+            Точный повод
+          </ToggleButton>
+          <ToggleButton 
+            type="button" 
+            active={formType === 'idea'} 
+            onClick={() => setFormType('idea')}
+          >
+            Идея
+          </ToggleButton>
+        </ToggleContainer>
 
-      <Main>
-        {/* Sidebar */}
-        <Sidebar>
-          <NavItem><MdHome size={24} /> Главная</NavItem>
-          <NavItem active><MdAddCircleOutline size={24} /> Создать повод</NavItem>
-          <NavItem><MdEventNote size={24} /> Мои поводы</NavItem>
-          <NavItem><MdForum size={24} /> Обсуждения</NavItem>
-        </Sidebar>
-
-        {/* Form Feed */}
-        <Feed>
-          {/* Toggle Switch */}
-          <ToggleContainer>
-            <ToggleButton>Точный повод</ToggleButton>
-            <ToggleButton active>Идея</ToggleButton>
-          </ToggleContainer>
-
+        {/* Условный рендеринг нужной формы */}
+        {formType === 'exact' ? (
+          <ExactEventForm />
+        ) : (
           <Form onSubmit={(e) => e.preventDefault()}>
             {/* Title */}
             <FormGroup>
@@ -416,14 +332,14 @@ const CreateEventIdea = () => {
             {/* Photo Upload */}
             <FormGroup>
               <Label>Добавить фото</Label>
-              <Row gap="12px">
+              <ButtonRow>
                 <IconButton type="button">
-                  <FiImage size={16} /> Из галереи
+                  <GalleryIcon size={16} /> Из галереи
                 </IconButton>
                 <IconButton type="button">
                   <FiCamera size={16} /> Сделать фото
                 </IconButton>
-              </Row>
+              </ButtonRow>
             </FormGroup>
 
             {/* Interests Tags */}
@@ -532,8 +448,10 @@ const CreateEventIdea = () => {
               <SubmitButton type="submit">Отправить идею</SubmitButton>
             </SubmitSection>
           </Form>
-        </Feed>
-      </Main>
-    </Container>
+        )}
+      </FormFeed>
+    </Layout>
   );
 };
+
+export default CreateEventIdea;

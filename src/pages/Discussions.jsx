@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { MdHome, MdAddCircleOutline, MdEventNote, MdForum, MdPerson, MdPushPin } from 'react-icons/md';
 import { FaBell } from 'react-icons/fa';
+import Layout from '../components/Layot';
 
 // Стили страницы
 const Container = styled.div`
@@ -240,25 +242,11 @@ const Discussions = () => {
     }
   ];
 
+  const navigate = useNavigate();
+
   return (
-    <Container>
-      {/* Header */}
-      <Header>
-        <Logo href="https://github.com" target="_blank">🔷 Повод</Logo>
-        <SearchInput placeholder="Поиск" />
-        <BellIcon><FaBell size={24} /></BellIcon>
-        <HeaderAvatar src="https://unsplash.com" alt="avatar" />
-      </Header>
-
+    <Layout>
       <Main>
-        {/* Sidebar */}
-        <Sidebar>
-          <NavItem><MdHome size={24} /> Главная</NavItem>
-          <NavItem><MdAddCircleOutline size={24} /> Создать повод</NavItem>
-          <NavItem><MdEventNote size={24} /> Мои поводы</NavItem>
-          <NavItem active><MdForum size={24} /> Обсуждения</NavItem>
-        </Sidebar>
-
         {/* Discussions Chats Feed */}
         <ChatFeed>
           {chats.map(chat => (
@@ -293,7 +281,7 @@ const Discussions = () => {
           </FilterButton>
         </FiltersSidebar>
       </Main>
-    </Container>
+    </Layout>
   );
 };
 

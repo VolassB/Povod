@@ -1,124 +1,141 @@
+import React from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 
-const Container = styled.div`
+// Стили страницы регистрации
+const AuthContainer = styled.div`
   min-height: 100vh;
-  background: #f8fafd;
+  background: #f4f6f9;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: system-ui, -apple-system, sans-serif;
   padding: 20px;
+  box-sizing: border-box;
 `;
 
-const Content = styled.div`
-  max-width: 480px;
+const AuthCard = styled.div`
+  background: white;
   width: 100%;
-  text-align: center;
-`;
-
-const ImagesContainer = styled.div`
+  max-width: 440px;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
   display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 40px;
+  flex-direction: column;
+  box-sizing: border-box;
 `;
 
-const Image = styled.img`
-  width: 220px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-`;
-
-const Title = styled.h1`
+const LogoBlock = styled.div`
   font-size: 32px;
-  font-weight: 700;
-  color: #222;
-  margin: 0 0 12px 0;
+  font-weight: 800;
+  color: #4a6bff;
+  text-align: center;
+  margin-bottom: 8px;
 `;
 
 const Subtitle = styled.p`
-  font-size: 18px;
-  color: #555;
-  margin-bottom: 40px;
-  line-height: 1.4;
+  text-align: center;
+  color: #6b7280;
+  font-size: 15px;
+  margin: 0 0 32px 0;
 `;
 
-const VkButton = styled.button`
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const Label = styled.label`
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+const Input = styled.input`
   width: 100%;
-  max-width: 340px;
-  padding: 16px 24px;
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  font-size: 15px;
+  box-sizing: border-box;
+  background: #f9fafb;
+  &:focus {
+    outline: none;
+    border-color: #4a6bff;
+    background: white;
+    box-shadow: 0 0 0 4px #eef2ff;
+  }
+`;
+
+const SubmitButton = styled.button`
+  width: 100%;
+  padding: 16px;
   background: #4a6bff;
   color: white;
   border: none;
-  border-radius: 12px;
-  font-size: 17px;
+  border-radius: 14px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  margin-bottom: 40px;
-  transition: all 0.2s;
-
+  margin-top: 12px;
+  box-shadow: 0 4px 14px rgba(74, 107, 255, 0.2);
+  transition: background 0.15s;
   &:hover {
-    background: #3b5ae0;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: scale(0.97);
+    background: #3b52d9;
   }
 `;
 
-const FooterText = styled.p`
-  font-size: 14px;
-  color: #777;
-  line-height: 1.5;
-`;
-
-const Link = styled.span`
-  color: #4a6bff;
-  text-decoration: underline;
-  cursor: pointer;
-
-  &:hover {
-    color: #3650c8;
-  }
-`;
-
+// Компонент страницы регистрации
 const Register = () => {
+  // Переменная объявлена строго один раз
+  const navigate = useNavigate();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    navigate('/home');
+  };
+
   return (
-    <Container>
-      <Content>
-        {/* Изображения */}
-        <ImagesContainer>
-          <Image 
-            src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622" 
-            alt="Вечеринка" 
-          />
-          <Image 
-            src="https://images.unsplash.com/photo-1529156069898-7630d9d5d6f5" 
-            alt="Друзья" 
-          />
-        </ImagesContainer>
+    <AuthContainer>
+      <AuthCard>
+        <LogoBlock>🔷 Повод</LogoBlock>
+        <Subtitle>Создайте аккаунт, чтобы находить компании</Subtitle>
+        
+        <Form onSubmit={handleRegister}>
+          <FormGroup>
+            <Label>Имя и фамилия</Label>
+            <Input type="text" placeholder="Игнатьева Василиса" required />
+          </FormGroup>
 
-        {/* Текст */}
-        <Title>СОЗДАТЬ ПОВОД</Title>
-        <Subtitle>
-          Без долгих переписок.<br />Пригласи одним кликом
-        </Subtitle>
+          <FormGroup>
+            <Label>Город</Label>
+            <Input type="text" placeholder="Санкт-Петербург" required />
+          </FormGroup>
 
-        {/* Кнопка VK */}
-        <VkButton>
-          Войти через VK ID
-        </VkButton>
+          <FormGroup>
+            <Label>Электронная почта</Label>
+            <Input type="email" placeholder="example@mail.com" required />
+          </FormGroup>
 
-        {/* Подвал */}
-        <FooterText>
-          Создавая аккаунт, вы соглашаетесь с{' '}
-          <Link>Условиями</Link> и{' '}
-          <Link>Политикой</Link>
-        </FooterText>
-      </Content>
-    </Container>
+          <FormGroup>
+            <Label>Пароль</Label>
+            <Input type="password" placeholder="••••••••" required />
+          </FormGroup>
+
+          <SubmitButton type="submit">Зарегистрироваться</SubmitButton>
+        </Form>
+      </AuthCard>
+    </AuthContainer>
   );
 };
 

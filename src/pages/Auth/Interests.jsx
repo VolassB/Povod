@@ -1,14 +1,7 @@
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-
-const Container = styled.div`
-  min-height: 100vh;
-  background: #f8fafd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-`;
+import Layout from '../../components/Layot';
 
 const Content = styled.div`
   max-width: 680px;
@@ -114,8 +107,10 @@ const Interests = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
-    <Container>
+    <Layout>
       <Content>
         <Title>Выберите свои интересы</Title>
 
@@ -168,7 +163,7 @@ const Interests = () => {
           Продолжить
         </ContinueButton>
       </Content>
-    </Container>
+    </Layout>
   );
 };
 
